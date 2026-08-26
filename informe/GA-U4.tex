@@ -1,0 +1,84 @@
+% =====================================================================
+%  Caratula de entrega al SGA -- GA-U4 AgroTrace Quevedo
+%
+%  IMPORTANTE: este documento debe ocupar EXACTAMENTE UNA PAGINA.
+%  El criterio de piso P1 de la rubrica anula la entrega si excede
+%  una pagina o si la URL del repositorio se parte en dos lineas.
+%
+%  Compilacion (ver README.md del repositorio):
+%      pdflatex GA-U4.tex
+%      bibtex   GA-U4
+%      pdflatex GA-U4.tex
+%      pdflatex GA-U4.tex
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{uteqverde}{RGB}{0,102,51}
+
+\pagestyle{empty}
+
+% ---------------------------------------------------------------------
+%  DATOS DEL EQUIPO -- complete unicamente estas seis lineas
+% ---------------------------------------------------------------------
+\newcommand{\numeroEquipo}{NN}
+\newcommand{\integranteUno}{Apellidos Nombres del primer integrante}
+\newcommand{\integranteDos}{Apellidos Nombres del segundo integrante}
+\newcommand{\integranteTres}{Apellidos Nombres del tercer integrante}
+\newcommand{\fechaEntrega}{2026-09-DD}
+\newcommand{\commitCorto}{0000000}
+
+% La URL debe quedar en UNA SOLA LINEA en el PDF final.
+% Verifiquelo abriendo el PDF, no solo el codigo fuente.
+\newcommand{\urlRepositorio}{https://github.com/EQUIPO/ga-u4-agrotrace}
+
+\begin{document}
+
+\begin{center}
+
+	\vspace*{0.8cm}
+
+	{\Large\bfseries\textcolor{uteqverde}{UNIVERSIDAD TECNICA ESTATAL DE QUEVEDO}}\\[5pt]
+	{\large Facultad de Ciencias de la Computacion y Diseno Digital}\\[3pt]
+	{\large Carrera de Ingenieria de Software}\\[28pt]
+
+	{\large\bfseries ASIGNATURA}\\[3pt]
+	{\large Aplicaciones Web --- Quinto nivel --- Paralelo A}\\[20pt]
+
+	{\large\bfseries UNIDAD IV}\\[3pt]
+	{\large Modelo-Vista-Controlador y Servicios Web}\\[20pt]
+
+	{\large\bfseries PRACTICA}\\[3pt]
+	{\large GA-U4 --- AgroTrace Quevedo: trazabilidad del cacao fino de aroma}\\[28pt]
+
+	{\large\bfseries EQUIPO \numeroEquipo}\\[8pt]
+	{\large \integranteUno}\\[3pt]
+	{\large \integranteDos}\\[3pt]
+	{\large \integranteTres}\\[28pt]
+
+	{\large\bfseries DOCENTE}\\[3pt]
+	{\large Dr. Gleiston Ciceron Guerrero Ulloa, Ph.D.}\\[28pt]
+
+	{\large\bfseries REPOSITORIO DEL TRABAJO DESARROLLADO}\\[10pt]
+
+	% --- La URL, en una sola linea ---
+	{\normalsize\texttt{\urlRepositorio}}\\[14pt]
+
+	{\normalsize Commit de la entrega: \texttt{\commitCorto}}\\[24pt]
+
+	{\large Quevedo --- Los Rios --- Ecuador}\\[3pt]
+	{\large \fechaEntrega}
+
+	\vfill
+
+\end{center}
+
+\end{document}

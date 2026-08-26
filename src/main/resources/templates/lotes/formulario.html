@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>AgroTrace Quevedo — Registrar lote</title>
+	<link rel="stylesheet" th:href="@{/css/estilo.css}"/>
+</head>
+<body>
+
+<header class="cabecera">
+	<h1>Registrar lote</h1>
+	<p class="sub">La política de recepción se aplica automáticamente al guardar</p>
+</header>
+
+<main class="contenedor">
+
+	<form method="post" th:action="@{/lotes}" th:object="${nuevoLoteForm}" class="formulario">
+
+		<div class="campo">
+			<label for="fincaId">Finca de origen</label>
+			<select id="fincaId" th:field="*{fincaId}">
+				<option value="">Seleccione…</option>
+				<option th:each="f : ${fincas}"
+				        th:value="${f.id}"
+				        th:text="${f.nombre} + ' — ' + ${f.productor}">Finca</option>
+			</select>
+			<span class="error" th:if="${#fields.hasErrors('fincaId')}"
+			      th:errors="*{fincaId}"></span>
+		</div>
+
+		<div class="campo">
+			<label for="fechaRecepcion">Fecha de recepción</label>
+			<input type="date" id="fechaRecepcion" th:field="*{fechaRecepcion}"/>
+			<span class="error" th:if="${#fields.hasErrors('fechaRecepcion')}"
+			      th:errors="*{fechaRecepcion}"></span>
+		</div>
+
+		<div class="campo">
+			<label for="pesoKg">Peso neto (kg)</label>
+			<input type="number" step="0.01" id="pesoKg" th:field="*{pesoKg}"/>
+			<span class="error" th:if="${#fields.hasErrors('pesoKg')}"
+			      th:errors="*{pesoKg}"></span>
+		</div>
+
+		<div class="campo">
+			<label for="humedadPorcentaje">Humedad (%)</label>
+			<input type="number" step="0.01" id="humedadPorcentaje"
+			       th:field="*{humedadPorcentaje}"/>
+			<span class="error" th:if="${#fields.hasErrors('humedadPorcentaje')}"
+			      th:errors="*{humedadPorcentaje}"></span>
+		</div>
+
+		<div class="campo">
+			<label for="fermentacionPorcentaje">Fermentación (%)</label>
+			<input type="number" step="0.01" id="fermentacionPorcentaje"
+			       th:field="*{fermentacionPorcentaje}"/>
+			<span class="error" th:if="${#fields.hasErrors('fermentacionPorcentaje')}"
+			      th:errors="*{fermentacionPorcentaje}"></span>
+		</div>
+
+		<div class="acciones">
+			<button type="submit" class="boton">Guardar</button>
+			<a class="boton secundario" th:href="@{/lotes}">Cancelar</a>
+		</div>
+
+	</form>
+
+</main>
+</body>
+</html>

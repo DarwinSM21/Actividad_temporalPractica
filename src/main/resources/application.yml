@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: agrotrace
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/agrotrace
+    username: agrotrace
+    password: agrotrace2026
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2s
+
+  # TODO-GA-14 (parte C): fijar aqui el tiempo de vida de la cache.
+  # El valor debe justificarse en docs/E2-cache.md segun la volatilidad
+  # del dato en el origen, no por comodidad.
+  cache:
+    type: redis
+    redis:
+      time-to-live: 15m
+      cache-null-values: false
+
+  thymeleaf:
+    cache: false
+
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+  webservices:
+    wsdl-locations: classpath:/wsdl
+
+server:
+  port: 8080
+  error:
+    include-message: always
+
+springdoc:
+  api-docs:
+    path: /api/openapi
+  swagger-ui:
+    path: /api/docs
+    operations-sorter: method
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    ec.edu.uteq.agrotrace: DEBUG
+    org.springframework.ws.client.MessageTracing.sent: TRACE
+    org.springframework.ws.server.MessageTracing.received: TRACE

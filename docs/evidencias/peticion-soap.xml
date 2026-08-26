@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Sobre SOAP 1.2 de prueba para el Bloque 3 de la practica GA-U4.
+
+    El comando exacto de curl esta en el README.md, seccion 2, y en la guia.
+    En resumen: se hace POST de este archivo a http://localhost:8080/ws con
+    las cabeceras Content-Type "text/xml; charset=utf-8" y SOAPAction
+    "https://agrotrace.uteq.edu.ec/soap/certificacion/Certificar".
+
+    Para comprobar que el contrato valida de verdad, cambie LT-000001 por
+    CACAO-1 y repita: el motor SOAP debe devolver un SOAP Fault, no un 500.
+-->
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:cert="https://agrotrace.uteq.edu.ec/soap/certificacion">
+	<soap:Header/>
+	<soap:Body>
+		<cert:CertificarLoteRequest>
+			<cert:codigoLote>LT-000001</cert:codigoLote>
+			<cert:cedulaTecnico>1204567890</cert:cedulaTecnico>
+		</cert:CertificarLoteRequest>
+	</soap:Body>
+</soap:Envelope>
