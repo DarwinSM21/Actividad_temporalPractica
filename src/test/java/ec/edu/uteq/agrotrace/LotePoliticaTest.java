@@ -1,7 +1,6 @@
 package ec.edu.uteq.agrotrace;
 
 import ec.edu.uteq.agrotrace.lote.domain.EstadoLote;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,21 +18,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class LotePoliticaTest {
 
 	@Test
-	@Disabled("Habilitar al resolver TODO-GA-01")
 	@DisplayName("Humedad sobre 7,5 % manda el lote a secado adicional")
 	void humedadAltaVaASecado() {
 		assertEquals(EstadoLote.SECADO_ADICIONAL, PoliticaFixture.evaluar("8.20", "70.00"));
 	}
 
 	@Test
-	@Disabled("Habilitar al resolver TODO-GA-01")
 	@DisplayName("Humedad valida con fermentacion bajo 60 % se rechaza")
 	void fermentacionBajaSeRechaza() {
 		assertEquals(EstadoLote.RECHAZADO, PoliticaFixture.evaluar("6.00", "55.00"));
 	}
 
 	@Test
-	@Disabled("Habilitar al resolver TODO-GA-01")
 	@DisplayName("Los valores en el limite exacto se aceptan")
 	void limitesExactosSeAceptan() {
 		assertEquals(EstadoLote.ACEPTADO, PoliticaFixture.evaluar("7.50", "60.00"));

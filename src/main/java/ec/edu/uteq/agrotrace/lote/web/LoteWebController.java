@@ -3,6 +3,7 @@ package ec.edu.uteq.agrotrace.lote.web;
 import ec.edu.uteq.agrotrace.finca.domain.FincaRepository;
 import ec.edu.uteq.agrotrace.lote.app.LoteService;
 import ec.edu.uteq.agrotrace.lote.domain.EstadoLote;
+import ec.edu.uteq.agrotrace.lote.domain.Lote;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,15 +46,10 @@ public class LoteWebController {
 			@RequestParam(required = false) EstadoLote estado,
 			Model model) {
 
-		// TODO-GA-03 (parte A): poblar el modelo y devolver la vista.
-		//
-		//   model.addAttribute("lotes", loteService.buscar(estado));
-		//   model.addAttribute("estados", EstadoLote.values());
-		//   model.addAttribute("estadoSeleccionado", estado);
-		//   return "lotes/lista";
-		//
-		throw new UnsupportedOperationException(
-				"TODO-GA-03: completar LoteWebController.listar()");
+		model.addAttribute("lotes", loteService.buscar(estado));
+		model.addAttribute("estados", EstadoLote.values());
+		model.addAttribute("estadoSeleccionado", estado);
+		return "lotes/lista";
 	}
 
 	/**
@@ -85,18 +81,13 @@ public class LoteWebController {
 			Model model,
 			RedirectAttributes flash) {
 
-		// TODO-GA-03 (parte B): validar, delegar y redirigir.
-		//
-		//   if (errores.hasErrors()) {
-		//       model.addAttribute("fincas", fincaRepository.findAllByOrderByNombreAsc());
-		//       return "lotes/formulario";
-		//   }
-		//   Lote creado = loteService.registrar(form.toCommand());
-		//   flash.addFlashAttribute("mensaje",
-		//           "Lote " + creado.getCodigo() + " registrado como " + creado.getEstado());
-		//   return "redirect:/lotes";
-		//
-		throw new UnsupportedOperationException(
-				"TODO-GA-03: completar LoteWebController.registrar()");
+		if (errores.hasErrors()) {
+			model.addAttribute("fincas", fincaRepository.findAllByOrderByNombreAsc());
+			return "lotes/formulario";
+		}
+		Lote creado = loteService.registrar(form.toCommand());
+		flash.addFlashAttribute("mensaje",
+				"Lote " + creado.getCodigo() + " registrado como " + creado.getEstado());
+		return "redirect:/lotes";
 	}
 }

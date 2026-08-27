@@ -96,11 +96,17 @@ public class Lote {
 	 * @throws IllegalStateException si falta la humedad o la fermentacion
 	 */
 	public EstadoLote evaluarEstado() {
-		// TODO-GA-01: implementar la politica de recepcion de APROCAFA.
-		// Sustituya esta excepcion por la logica descrita en el Javadoc de arriba.
-		// Recuerde: BigDecimal se compara con compareTo, nunca con == ni con equals.
-		throw new UnsupportedOperationException(
-				"TODO-GA-01: implementar la politica de recepcion en Lote.evaluarEstado()");
+		if (this.humedadPorcentaje == null || this.fermentacionPorcentaje == null) {
+			throw new IllegalStateException(
+					"No se puede evaluar un lote sin humedad y fermentacion medidas");
+		}
+		if (this.humedadPorcentaje.compareTo(UMBRAL_HUMEDAD) > 0) {
+			return EstadoLote.SECADO_ADICIONAL;
+		}
+		if (this.fermentacionPorcentaje.compareTo(UMBRAL_FERMENTACION) < 0) {
+			return EstadoLote.RECHAZADO;
+		}
+		return EstadoLote.ACEPTADO;
 	}
 
 	/**

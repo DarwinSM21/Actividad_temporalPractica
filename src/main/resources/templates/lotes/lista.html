@@ -43,28 +43,22 @@
 		</tr>
 		</thead>
 
-		<!--
-			TODO-GA-04: iterar los lotes y colorear el estado.
-
-			Complete el <tbody> siguiendo estas indicaciones:
-
-			  1. <tr th:each="lote : ${lotes}"> para recorrer la lista.
-			  2. Una celda por columna con th:text.
-			     La fecha se formatea con:
-			       ${#temporals.format(lote.fechaRecepcion, 'dd/MM/yyyy')}
-			  3. La celda de estado lleva un <span class="badge"> cuya clase
-			     adicional depende del estado, con th:classappend:
-			       'ok'     si el estado es ACEPTADO
-			       'no'     si el estado es RECHAZADO
-			       'espera' en cualquier otro caso
-			  4. Anada una fila de lista vacia con:
-			       <tr th:if="${#lists.isEmpty(lotes)}">
-		-->
 		<tbody>
-		<tr>
-			<td colspan="6" class="vacio">
-				TODO-GA-04: complete el cuerpo de esta tabla.
+		<tr th:each="lote : ${lotes}">
+			<td th:text="${lote.codigo}">LT-000</td>
+			<td th:text="${lote.finca.nombre}">Finca</td>
+			<td th:text="${#temporals.format(lote.fechaRecepcion, 'dd/MM/yyyy')}">01/01/2026</td>
+			<td class="num" th:text="${lote.pesoKg} + ' kg'">0 kg</td>
+			<td class="num" th:text="${lote.humedadPorcentaje} + ' %'">0 %</td>
+			<td>
+				<span class="badge"
+				      th:classappend="${lote.estado.name() == 'ACEPTADO'} ? 'ok'
+				          : (${lote.estado.name() == 'RECHAZADO'} ? 'no' : 'espera')"
+				      th:text="${lote.estado}">ESTADO</span>
 			</td>
+		</tr>
+		<tr th:if="${#lists.isEmpty(lotes)}">
+			<td colspan="6" class="vacio">No hay lotes con ese criterio.</td>
 		</tr>
 		</tbody>
 	</table>

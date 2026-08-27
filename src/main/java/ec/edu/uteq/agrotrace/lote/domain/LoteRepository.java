@@ -25,16 +25,9 @@ public interface LoteRepository extends JpaRepository<Lote, Long> {
 
 	Page<Lote> findByEstadoAndFincaId(EstadoLote estado, Long fincaId, Pageable pageable);
 
-	// TODO-GA-02: declare aqui las dos consultas derivadas que faltan.
-	//
-	//   (a) Lotes de una finca en un estado dado, mas recientes primero.
-	//       Firma esperada:
-	//         List<Lote> findByFincaIdAndEstadoOrderByFechaRecepcionDesc(
-	//                 Long fincaId, EstadoLote estado);
-	//
-	//   (b) Contador de lotes por estado, para el tablero.
-	//       Firma esperada:
-	//         long countByEstado(EstadoLote estado);
-	//
-	// No escriba SQL: basta con declarar el metodo con el nombre correcto.
+	// (a) Lotes de una finca en un estado dado, mas recientes primero.
+	List<Lote> findByFincaIdAndEstadoOrderByFechaRecepcionDesc(Long fincaId, EstadoLote estado);
+
+	// (b) Contador de lotes por estado, para el tablero.
+	long countByEstado(EstadoLote estado);
 }

@@ -115,9 +115,7 @@ public class LoteService {
 	 * @return numero de lotes en ese estado
 	 */
 	public long contarPorEstado(EstadoLote estado) {
-		// Depende de TODO-GA-02 (b). Mientras no se declare countByEstado,
-		// se resuelve contando la pagina completa.
-		return loteRepository.findByEstado(estado, Pageable.unpaged()).getTotalElements();
+		return loteRepository.countByEstado(estado);
 	}
 
 	private String siguienteCodigo() {
