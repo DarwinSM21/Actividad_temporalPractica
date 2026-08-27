@@ -43,29 +43,56 @@ function obtenerToken() {
  * @returns {Promise<void>}
  */
 async function cargarLotes(estado = null) {
-	// TODO-GA-12: consumir GET /api/v1/lotes con fetch y async/await.
-	//
-	//   1. Construya la URL con URLSearchParams o con new URL(...):
-	//        const url = new URL('/api/v1/lotes', window.location.origin);
-	//        if (estado) { url.searchParams.set('estado', estado); }
-	//        url.searchParams.set('size', '50');
-	//
-	//   2. Llame a fetch con las cabeceras Accept y Authorization.
-	//
-	//   3. TRAMPA QUE SE EVALUA: fetch NO lanza excepcion ante 4xx ni 5xx.
-	//      Debe comprobar respuesta.ok explicitamente:
-	//        if (!respuesta.ok) {
-	//            const problema = await respuesta.json();
-	//            throw new ErrorApi(problema.title, problema.detail, respuesta.status);
-	//        }
-	//
-	//   4. Pinte los resultados con pintarLotes(cuerpo, pagina.content).
-	//
-	//   5. Capture por separado ErrorApi (mensaje del servidor) y cualquier
-	//      otro error (fallo de red), y muestre un mensaje util al usuario.
-	//      Dejar al tecnico ante una pantalla en blanco se penaliza en C6.
-	//
-	console.warn('TODO-GA-12: implementar cargarLotes()');
+	const cuerpo = document.querySelector('#tabla-lotes tbody');
+	const aviso = document.querySelector('#aviso');
+	if (!cuerpo) {
+		return;
+	}
+	mostrarCargando(cuerpo);
+
+	const url = new URL('/api/v1/lotes', window.location.origin);
+	if (estado) {
+		url.searchParams.set('estado', estado);
+	}
+	url.searchParams.set('size', '50');
+
+	try {
+		const respuesta = await fetch(url, {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Authorization': `Bearer ${obtenerToken()}`
+			}
+		});
+
+		// fetch NO lanza excepcion ante 4xx ni 5xx: hay que comprobarlo.
+		if (!respuesta.ok) {
+			const problema = await respuesta.json().catch(() => ({}));
+			throw new ErrorApi(problema.title, problema.detail, respuesta.status);
+		}
+
+		const pagina = await respuesta.json();
+		pintarLotes(cuerpo, pagina.content);
+		if (aviso) {
+			const total = pagina.page ? pagina.page.totalElements : pagina.content.length;
+			aviso.textContent = `${total} lote(s) cargado(s) desde la API.`;
+			aviso.className = 'aviso ok';
+		}
+	} catch (error) {
+		cuerpo.innerHTML = '';
+		if (error instanceof ErrorApi) {
+			if (aviso) {
+				aviso.textContent = `${error.titulo || 'Error'}: ${error.detalle || 'petición rechazada'} (${error.estado})`;
+				aviso.className = 'aviso error';
+			}
+		} else {
+			if (aviso) {
+				aviso.textContent = 'No se pudo contactar al servidor. Reintente en unos segundos.';
+				aviso.className = 'aviso error';
+			}
+			console.error('Fallo de red al cargar lotes', error);
+		}
+	}
 }
 
 /**
@@ -182,6 +209,9 @@ async function cargarClima() {
 
 document.addEventListener('DOMContentLoaded', () => {
 	cargarClima();
-	// Descomente al resolver TODO-GA-12:
-	// cargarLotes();
+
+	// El listado se repuebla desde la API REST (Tema 4, subtema 1). Respeta el
+	// filtro que el formulario MVC haya aplicado en el servidor.
+	const filtro = document.querySelector('#estado');
+	cargarLotes(filtro && filtro.value ? filtro.value : null);
 });

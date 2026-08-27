@@ -8,8 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
  * Punto de entrada de AgroTrace Quevedo.
  *
  * <p>Practica GA-U4 de Aplicaciones Web: Modelo-Vista-Controlador y Servicios Web.
- * El esqueleto arranca y responde; su trabajo consiste en completar los catorce
- * marcadores {@code TODO-GA} distribuidos en el codigo.</p>
+ * Los catorce marcadores de la practica estan resueltos en los bloques 1 a 4.</p>
  */
 @SpringBootApplication
 @EnableCaching

@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Metadatos de la especificacion OpenAPI 3.2 publicada en /api/docs.
- * Ya viene resuelta: lo que falta documentar son los endpoints (TODO-GA-08).
+ * Metadatos de la especificacion OpenAPI publicada en /api/docs. Los endpoints
+ * se documentan con anotaciones @Operation/@ApiResponses en cada controlador.
  */
 @Configuration
 public class OpenApiConfig {

@@ -7,13 +7,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Pruebas de la politica de recepcion de APROCAFA.
- *
- * <p>Estan anotadas con {@code @Disabled} porque el esqueleto todavia no
- * implementa {@code Lote.evaluarEstado()}. <strong>Al resolver TODO-GA-01,
- * borre las anotaciones {@code @Disabled} y ejecute
- * {@code .\mvnw.cmd test}</strong>: las tres deben pasar. Son su comprobacion
- * objetiva del Bloque 1, antes de mirar la pantalla.</p>
+ * Pruebas de la politica de recepcion de APROCAFA sobre {@code Lote.evaluarEstado()}.
+ * Son la comprobacion objetiva del Bloque 1.
  */
 class LotePoliticaTest {
 

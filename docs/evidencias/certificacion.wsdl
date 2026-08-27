@@ -10,7 +10,7 @@
     -->
 
     <!-- ================================================================
-         TODO-GA-09 (parte A): elemento de peticion.
+         Elemento de peticion.
          ================================================================ -->
     <xs:element name="CertificarLoteRequest">
         <xs:complexType>
@@ -22,7 +22,7 @@
     </xs:element>
 
     <!-- ================================================================
-         TODO-GA-09 (parte B): elemento de respuesta con siete campos.
+         Elemento de respuesta con siete campos.
          ================================================================ -->
     <xs:element name="CertificarLoteResponse">
         <xs:complexType>
@@ -39,7 +39,7 @@
     </xs:element>
 
     <!-- ================================================================
-         TODO-GA-09 (parte C): tipos restringidos.
+         Tipos restringidos.
 
          Esta es la ventaja real de SOAP frente a REST: la validacion la
          aplica el motor SOAP ANTES de que el codigo Java se ejecute, y

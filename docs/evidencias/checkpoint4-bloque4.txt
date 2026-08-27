@@ -1,0 +1,45 @@
+== Checkpoint 4 - Bloque 4 (consumo cliente/servidor + cache) ==
+
+### 1) Consumo desde el cliente (TODO-GA-12)  -  navegador en /lotes
+
+- Peticion observada en la pestana de red:  GET /api/v1/lotes?size=50  ->  200
+- #aviso:  "13 lote(s) cargado(s) desde la API."   (la tabla del tablero se
+  repuebla con los datos de la API, no solo con el render de servidor).
+- Comprobacion de respuesta.ok:
+    * filtro invalido  -> #aviso: "Peticion invalida: No enum constant
+      ec.edu.uteq.agrotrace.lote.domain.EstadoLote.ESTADO_INVENTADO (400)"
+      (rama ErrorApi, clase "aviso error").
+    * servidor caido   -> #aviso: "No se pudo contactar al servidor. Reintente
+      en unos segundos."  (rama de fallo de red; la pagina NO queda en blanco).
+
+### 2) Consumo desde el servidor + cache-aside (TODO-GA-13 y 14)
+
+  1a llamada (cache fria) : HTTP 200   ~1.24 s   -> golpea Open-Meteo
+  2a llamada (inmediata)  : HTTP 200   ~0.07 s   -> servida desde Redis
+
+  KEYS "pronostico-secado*"                    -> pronostico-secado::acopio-principal
+  TTL  "pronostico-secado::acopio-principal"   -> 898 s   (entre 1 y 900)
+
+  Log del servidor (una sola vez, en la 1a llamada):
+    INFO ... e.edu.uteq.agrotrace.clima.ClimaService : Fallo de cache: consultando origen open-meteo
+
+  El cliente RestClient usa tiempos limite (connect 3 s / read 5 s) para que un
+  Open-Meteo colgado no bloquee hilos.
+
+### 3) Degradacion elegante (TODO-GA-14 parte B)
+
+  Verificada por ClimaServiceTest (2/2):
+    - ante ClimaNoDisponibleException (origen 5xx)
+    - ante ResourceAccessException  (fallo de conexion)
+  consultarTolerante() devuelve PronosticoSecado.noDisponible() (zona="no-disponible"),
+  el endpoint sigue respondiendo 200 y el tablero muestra "Sin datos meteorologicos".
+
+  Nota: el paso "docker network disconnect" de la guia asume la app dentro de un
+  contenedor. Aqui la app corre de forma nativa, por eso la degradacion del lado
+  servidor se cubre con prueba unitaria en lugar de cortando la red del contenedor.
+
+### 4) TTL - justificacion
+
+  Ver docs/E2-cache.md. Resumen: Open-Meteo recalcula el pronostico horario cada
+  hora; 15 min mantiene el dato fresco para decidir si sacar el cacao al sol sin
+  castigar al proveedor con llamadas inutiles.

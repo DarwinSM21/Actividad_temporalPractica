@@ -14,15 +14,11 @@ import javax.xml.datatype.DatatypeFactory;
  * Punto de entrada SOAP del servicio de certificacion oficial.
  *
  * <p>La entidad certificadora nacional solo acepta integraciones SOAP con
- * contrato WSDL. El enfoque es <em>contract-first</em>: primero se escribe el
- * esquema en {@code src/main/resources/xsd/certificacion.xsd} (TODO-GA-09),
- * luego Maven genera las clases Java, y solo entonces se escribe este
- * endpoint.</p>
- *
- * <p><strong>Antes de compilar esta clase ejecute:</strong>
- * {@code .\mvnw.cmd generate-sources} para que existan las clases
+ * contrato WSDL. El enfoque es <em>contract-first</em>: el esquema
+ * {@code src/main/resources/xsd/certificacion.xsd} es la fuente de verdad,
+ * {@code .\mvnw.cmd generate-sources} genera las clases
  * {@code CertificarLoteRequest} y {@code CertificarLoteResponse} en el paquete
- * {@code ec.edu.uteq.agrotrace.soap.gen}.</p>
+ * {@code ec.edu.uteq.agrotrace.soap.gen}, y este endpoint las usa.</p>
  */
 @Endpoint
 public class CertificacionEndpoint {

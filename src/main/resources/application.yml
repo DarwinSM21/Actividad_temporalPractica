@@ -26,9 +26,9 @@ spring:
       port: 6379
       timeout: 2s
 
-  # TODO-GA-14 (parte C): fijar aqui el tiempo de vida de la cache.
-  # El valor debe justificarse en docs/E2-cache.md segun la volatilidad
-  # del dato en el origen, no por comodidad.
+  # TTL de la cache del pronostico. 15 min: el origen (Open-Meteo) recalcula el
+  # pronostico horario cada hora, asi que 15 min mantiene el dato fresco sin
+  # castigar al proveedor. Justificacion completa en docs/E2-cache.md.
   cache:
     type: redis
     redis:
