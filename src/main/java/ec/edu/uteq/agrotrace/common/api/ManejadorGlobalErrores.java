@@ -4,12 +4,14 @@ import ec.edu.uteq.agrotrace.clima.ClimaNoDisponibleException;
 import ec.edu.uteq.agrotrace.lote.domain.LoteNoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.URI;
 import java.time.Instant;
+import java.util.stream.Collectors;
 
 /**
  * Traduce las excepciones de la aplicacion al formato uniforme de error
@@ -32,18 +34,13 @@ public class ManejadorGlobalErrores {
 	 */
 	@ExceptionHandler(LoteNoEncontradoException.class)
 	public ProblemDetail loteNoEncontrado(LoteNoEncontradoException ex) {
-		// TODO-GA-07 (parte A): construir el ProblemDetail de 404.
-		//
-		//   ProblemDetail pd = ProblemDetail.forStatusAndDetail(
-		//           HttpStatus.NOT_FOUND, ex.getMessage());
-		//   pd.setType(URI.create(BASE_TIPO + "lote-no-encontrado"));
-		//   pd.setTitle("Lote no encontrado");
-		//   pd.setProperty("codigoBuscado", ex.getCodigo());
-		//   pd.setProperty("marcaTiempo", Instant.now());
-		//   return pd;
-		//
-		throw new UnsupportedOperationException(
-				"TODO-GA-07: completar ManejadorGlobalErrores.loteNoEncontrado()");
+		ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+				HttpStatus.NOT_FOUND, ex.getMessage());
+		pd.setType(URI.create(BASE_TIPO + "lote-no-encontrado"));
+		pd.setTitle("Lote no encontrado");
+		pd.setProperty("codigoBuscado", ex.getCodigo());
+		pd.setProperty("marcaTiempo", Instant.now());
+		return pd;
 	}
 
 	/**
@@ -54,14 +51,17 @@ public class ManejadorGlobalErrores {
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ProblemDetail validacion(MethodArgumentNotValidException ex) {
-		// TODO-GA-07 (parte B): construir el ProblemDetail de 422.
-		//
-		// Debe incluir una propiedad "campos" que sea un mapa
-		// nombreDelCampo -> mensajeDeError, construido a partir de
-		// ex.getBindingResult().getFieldErrors().
-		//
-		throw new UnsupportedOperationException(
-				"TODO-GA-07: completar ManejadorGlobalErrores.validacion()");
+		ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+				HttpStatus.UNPROCESSABLE_CONTENT, "La peticion tiene campos invalidos");
+		pd.setType(URI.create(BASE_TIPO + "validacion"));
+		pd.setTitle("Error de validacion");
+		pd.setProperty("campos", ex.getBindingResult().getFieldErrors().stream()
+				.collect(Collectors.toMap(
+						FieldError::getField,
+						f -> f.getDefaultMessage() == null ? "invalido" : f.getDefaultMessage(),
+						(a, b) -> a)));
+		pd.setProperty("marcaTiempo", Instant.now());
+		return pd;
 	}
 
 	/**

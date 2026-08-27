@@ -1,0 +1,89 @@
+== Checkpoint 2 - Bloque 2 (API REST) ==  2026-08-27T13:31:40
+
+### 1) 200 lista paginada + filtro
+HTTP/1.1 200 
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 27 Aug 2026 18:31:42 GMT
+
+{"content":[{"codigo":"LT-000005","finca":"Los Tres Rios","canton":"Quevedo","fechaRecepcion":"2026-08-21","pesoKg":175.00,"humedadPorcentaje":6.95,"fermentacionPorcentaje":77.25,"estado":"ACEPTADO"},{"codigo":"LT-000004","finca":"La Envidia","canton":"Quevedo","fechaRecepcion":"2026-08-20","pesoKg":98.30,"humedadPorcentaje":7.50,"fermentacionPorcentaje":65.00,"estado":"ACEPTADO"},{"codigo":"LT-000003","finca":"Palmar Adentro","canton":"Valencia","fechaRecepcion":"2026-08-19","pesoKg":320.75,"humedadPorcentaje":6.20,"fermentacionPorcentaje":81.00,"estado":"ACEPTADO"},{"codigo":"LT-000001","finca":"La Envidia","canton":"Quevedo","fechaRecepcion":"2026-08-18","pesoKg":145.50,"humedadPorcentaje":6.80,"fermentacionPorcentaje":72.00,"estado":"ACEPTADO"},{"codigo":"LT-000002","finca":"San Jacinto","canton":"Quevedo","fechaRecepcion":"2026-08-18","pesoKg":210.00,"humedadPorcentaje":7.10,"fermentacionPorcentaje":68.50,"estado":"ACEPTADO"}],"page":{"size":5,"number":0,"totalElements":5,"totalPages":1}}
+
+
+### 2) 200 detalle por codigo
+HTTP/1.1 200 
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 27 Aug 2026 18:31:42 GMT
+
+{"codigo":"LT-000001","finca":"La Envidia","canton":"Quevedo","fechaRecepcion":"2026-08-18","pesoKg":145.50,"humedadPorcentaje":6.80,"fermentacionPorcentaje":72.00,"estado":"ACEPTADO"}
+
+
+### 3) 201 Created + Location
+HTTP/1.1 201 
+Location: http://localhost:8080/api/v1/lotes/LT-000013
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/json;charset=UTF-8
+Transfer-Encoding: chunked
+Date: Thu, 27 Aug 2026 18:31:42 GMT
+
+{"codigo":"LT-000013","finca":"La Envidia","canton":"Quevedo","fechaRecepcion":"2026-08-27","pesoKg":120.5,"humedadPorcentaje":6.8,"fermentacionPorcentaje":72,"estado":"ACEPTADO"}
+
+
+### 4) 404 problem details
+HTTP/1.1 404 
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/problem+json
+Transfer-Encoding: chunked
+Date: Thu, 27 Aug 2026 18:31:42 GMT
+
+{"detail":"No existe un lote con codigo LT-999999","instance":"/api/v1/lotes/LT-999999","status":404,"title":"Lote no encontrado","type":"https://agrotrace.uteq.edu.ec/errores/lote-no-encontrado","codigoBuscado":"LT-999999","marcaTiempo":"2026-08-27T18:31:42.351261300Z"}
+
+
+### 5) 422 campos invalidos
+HTTP/1.1 422 
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 0
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Type: application/problem+json
+Transfer-Encoding: chunked
+Date: Thu, 27 Aug 2026 18:31:42 GMT
+
+{"detail":"La peticion tiene campos invalidos","instance":"/api/v1/lotes","status":422,"title":"Error de validacion","type":"https://agrotrace.uteq.edu.ec/errores/validacion","campos":{"fincaId":"fincaId es obligatorio","fermentacionPorcentaje":"fermentacionPorcentaje es obligatorio","humedadPorcentaje":"humedadPorcentaje es obligatorio","pesoKg":"El peso debe ser mayor que cero"},"marcaTiempo":"2026-08-27T18:31:42.405356900Z"}
+
+
+### 6) OpenAPI: /api/docs y esquema JSON
+GET /api/docs -> HTTP 302
+api-docs contiene 'openapi': 
+GET /api/v1/lotes responses documentados: 
+POST /api/v1/lotes responses documentados: 
+GET /api/v1/lotes/{codigo} responses documentados: 
+GET /api/docs (Swagger UI) -> HTTP 200
+openapi version: 3.1.0
+GET  /api/v1/lotes         -> 200, 401, 422
+POST /api/v1/lotes         -> 201, 422
+GET  /api/v1/lotes/{codigo}-> 200, 404
