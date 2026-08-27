@@ -1,8 +1,12 @@
 package ec.edu.uteq.agrotrace.soap;
 
+import ec.edu.uteq.agrotrace.soap.gen.CertificarLoteRequest;
+import ec.edu.uteq.agrotrace.soap.gen.CertificarLoteResponse;
 import org.springframework.boot.webservices.client.WebServiceTemplateBuilder;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.springframework.ws.soap.client.core.SoapActionCallback;
 
 /**
  * Cliente del propio servicio SOAP de certificacion.
@@ -20,16 +24,15 @@ public class ClienteCertificacion {
 
 	private final WebServiceTemplate plantilla;
 
-	public ClienteCertificacion(WebServiceTemplateBuilder constructor) {
-		// TODO-GA-11 (parte A): construir la plantilla apuntando a /ws.
-		//
-		//   this.plantilla = constructor
-		//           .setDefaultUri("http://localhost:8080/ws")
-		//           .build();
-		//
-		// Spring Boot no expone un bean WebServiceTemplate ya configurado:
-		// entrega un WebServiceTemplateBuilder para que usted lo construya.
-		this.plantilla = null;
+	public ClienteCertificacion(WebServiceTemplateBuilder constructor, Jaxb2Marshaller marshaller) {
+		// Spring Boot entrega un WebServiceTemplateBuilder pero no un
+		// WebServiceTemplate ni un marshaller ya configurados: el marshaller se
+		// toma del bean definido en ConfiguracionSoap.
+		this.plantilla = constructor
+				.setDefaultUri("http://localhost:8080/ws")
+				.setMarshaller(marshaller)
+				.setUnmarshaller(marshaller)
+				.build();
 	}
 
 	/**
@@ -39,18 +42,11 @@ public class ClienteCertificacion {
 	 * @param cedulaTecnico cedula del tecnico solicitante
 	 * @return la respuesta del servicio, del tipo generado desde el XSD
 	 */
-	public Object certificar(String codigoLote, String cedulaTecnico) {
-		// TODO-GA-11 (parte B): invocar el servicio.
-		//
-		//   CertificarLoteRequest peticion = new CertificarLoteRequest();
-		//   peticion.setCodigoLote(codigoLote);
-		//   peticion.setCedulaTecnico(cedulaTecnico);
-		//   return (CertificarLoteResponse) plantilla.marshalSendAndReceive(
-		//           peticion, new SoapActionCallback(ACCION_CERTIFICAR));
-		//
-		// Cambie el tipo de retorno Object por CertificarLoteResponse una vez
-		// que haya generado las clases con: .\mvnw.cmd generate-sources
-		throw new UnsupportedOperationException(
-				"TODO-GA-11: completar ClienteCertificacion.certificar()");
+	public CertificarLoteResponse certificar(String codigoLote, String cedulaTecnico) {
+		CertificarLoteRequest peticion = new CertificarLoteRequest();
+		peticion.setCodigoLote(codigoLote);
+		peticion.setCedulaTecnico(cedulaTecnico);
+		return (CertificarLoteResponse) plantilla.marshalSendAndReceive(
+				peticion, new SoapActionCallback(ACCION_CERTIFICAR));
 	}
 }

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="https://agrotrace.uteq.edu.ec/soap/certificacion" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="https://agrotrace.uteq.edu.ec/soap/certificacion" targetNamespace="https://agrotrace.uteq.edu.ec/soap/certificacion">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://agrotrace.uteq.edu.ec/soap/certificacion">
+
+    <!--
+        Contrato del servicio de certificacion oficial de lotes.
+
+        Enfoque contract-first: este archivo es la fuente de verdad. Maven
+        genera las clases Java desde aqui con:  .\mvnw.cmd generate-sources
+    -->
+
+    <!-- ================================================================
+         TODO-GA-09 (parte A): elemento de peticion.
+         ================================================================ -->
+    <xs:element name="CertificarLoteRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="codigoLote" type="tns:CodigoLote"/>
+                <xs:element name="cedulaTecnico" type="tns:Cedula"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ================================================================
+         TODO-GA-09 (parte B): elemento de respuesta con siete campos.
+         ================================================================ -->
+    <xs:element name="CertificarLoteResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="numeroCertificado" type="xs:string"/>
+                <xs:element name="codigoLote" type="tns:CodigoLote"/>
+                <xs:element name="fincaOrigen" type="xs:string"/>
+                <xs:element name="pesoKg" type="xs:decimal"/>
+                <xs:element name="estadoLote" type="xs:string"/>
+                <xs:element name="fechaEmision" type="xs:date"/>
+                <xs:element name="vigente" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ================================================================
+         TODO-GA-09 (parte C): tipos restringidos.
+
+         Esta es la ventaja real de SOAP frente a REST: la validacion la
+         aplica el motor SOAP ANTES de que el codigo Java se ejecute, y
+         ademas queda publicada en el WSDL para que el cliente la genere.
+         ================================================================ -->
+    <xs:simpleType name="CodigoLote">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="LT-[0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="Cedula">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{10}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="CertificarLoteResponse">
+    <wsdl:part element="tns:CertificarLoteResponse" name="CertificarLoteResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="CertificarLoteRequest">
+    <wsdl:part element="tns:CertificarLoteRequest" name="CertificarLoteRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CertificacionPort">
+    <wsdl:operation name="CertificarLote">
+      <wsdl:input message="tns:CertificarLoteRequest" name="CertificarLoteRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:CertificarLoteResponse" name="CertificarLoteResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CertificacionPortSoap11" type="tns:CertificacionPort">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="CertificarLote">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="CertificarLoteRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="CertificarLoteResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CertificacionPortService">
+    <wsdl:port binding="tns:CertificacionPortSoap11" name="CertificacionPortSoap11">
+      <soap:address location="http://localhost:8080/ws"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
