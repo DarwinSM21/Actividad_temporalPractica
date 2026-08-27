@@ -1,6 +1,6 @@
 == Checkpoint 4 - Bloque 4 (consumo cliente/servidor + cache) ==
 
-### 1) Consumo desde el cliente (TODO-GA-12)  -  navegador en /lotes
+### 1) Consumo desde el cliente (tablero.js cargarLotes)  -  navegador en /lotes
 
 - Peticion observada en la pestana de red:  GET /api/v1/lotes?size=50  ->  200
 - #aviso:  "13 lote(s) cargado(s) desde la API."   (la tabla del tablero se
@@ -12,7 +12,7 @@
     * servidor caido   -> #aviso: "No se pudo contactar al servidor. Reintente
       en unos segundos."  (rama de fallo de red; la pagina NO queda en blanco).
 
-### 2) Consumo desde el servidor + cache-aside (TODO-GA-13 y 14)
+### 2) Consumo desde el servidor + cache-aside (ClimaService)
 
   1a llamada (cache fria) : HTTP 200   ~1.24 s   -> golpea Open-Meteo
   2a llamada (inmediata)  : HTTP 200   ~0.07 s   -> servida desde Redis
@@ -26,7 +26,7 @@
   El cliente RestClient usa tiempos limite (connect 3 s / read 5 s) para que un
   Open-Meteo colgado no bloquee hilos.
 
-### 3) Degradacion elegante (TODO-GA-14 parte B)
+### 3) Degradacion elegante (ClimaService.consultarTolerante)
 
   Verificada por ClimaServiceTest (2/2):
     - ante ClimaNoDisponibleException (origen 5xx)
